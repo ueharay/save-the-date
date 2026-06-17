@@ -118,7 +118,7 @@
     font-family:var(--mono); font-size:clamp(8.5px,2.1cqw,11.5px); letter-spacing:.02em;
     color:var(--log); white-space:nowrap; opacity:0; transition:opacity .35s ease; z-index:4;
   }
-  .card.drawing #artifact{ opacity:1; }
+  .drawing #artifact{ opacity:1; }
   #artifact .bar{ color:var(--emerald); letter-spacing:0; }
   #artifact .ok{ color:var(--emerald-deep); }
 
@@ -141,44 +141,45 @@
   .card.show .title .ch{ animation:letter .85s cubic-bezier(.2,.85,.25,1) forwards; }
   @keyframes letter{ to{ opacity:1; transform:none; } }
 
-  /* ---------------- build log (wide, tall, flowing) ---------------- */
+  /* ---------------- build log (full-screen, flowing story) ---------------- */
   #buildlog{
-    position:absolute; z-index:3; left:50%; top:6.5cqw;
-    transform:translateX(-50%);
-    width:90cqw; height:120cqw;
+    position:fixed; inset:0; z-index:30;
     overflow-y:scroll; scrollbar-width:none;
+    padding:4.5vh 5.5vw;
     font-family:var(--mono);
-    font-size:clamp(7.5px, 1.95cqw, 10.5px);
-    line-height:1.5;
+    font-size:clamp(8px, 1.45vw, 13px);
+    line-height:1.6;
     color:var(--log);
+    background:radial-gradient(135% 100% at 50% 26%, var(--paper-hi) 0%, var(--paper) 55%, var(--paper-lo) 100%);
     display:none;
-    -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 8%, #000 84%, transparent 100%);
-            mask-image:linear-gradient(to bottom, transparent 0, #000 8%, #000 84%, transparent 100%);
-    transition:opacity .55s ease, filter .55s ease, transform .55s ease;
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 6%, #000 90%, transparent 100%);
+            mask-image:linear-gradient(to bottom, transparent 0, #000 6%, #000 90%, transparent 100%);
+    transition:opacity .6s ease, filter .6s ease;
   }
   #buildlog::-webkit-scrollbar{ display:none; }
   .anim #buildlog{ display:block; }
-  #logscroll{ padding:0 3cqw; }
+  #logscroll{ max-width:1180px; margin:0 auto; }
   #buildlog .ln{ white-space:normal; overflow-wrap:anywhere; }
-  #buildlog .sec{ color:#54514a; }
+  #buildlog .sec{ color:#4f4c45; }
   #buildlog .ok{ color:var(--emerald-deep); }
   #buildlog .warn{ color:var(--log-warm); }
+  #buildlog .quote{ color:#9a9488; font-style:italic; }
   #buildlog .dim{ color:#aaa495; }
-  #buildlog .cur{ display:inline-block; width:.55em; height:1.02em; background:#54514a;
+  #buildlog .cur{ display:inline-block; width:.55em; height:1.02em; background:#4f4c45;
     transform:translateY(2px); margin-left:1px; animation:blink 1.05s steps(1) infinite; }
   @keyframes blink{ 50%{ opacity:0; } }
-  #buildlog.gone{ opacity:0; filter:blur(3px); transform:translateX(-50%) translateY(-10px); pointer-events:none; }
-  .card.drawing #buildlog{ opacity:.12; }
-  .card.drawing .lily-wrap{ z-index:6; }
+  #buildlog.gone{ opacity:0; filter:blur(2px); pointer-events:none; }
+  .drawing #buildlog{ opacity:.12; }
+  .drawing .card{ z-index:40; }
 
   #skip{
-    position:absolute; z-index:5; left:0; right:0; bottom:5.5%; text-align:center;
-    font-family:var(--mono); font-size:clamp(9px,2cqw,11px);
+    position:fixed; z-index:31; left:0; right:0; bottom:4.5%; text-align:center;
+    font-family:var(--mono); font-size:clamp(9px,1.4vw,11px);
     color:#b7b1a3; letter-spacing:.05em; opacity:0; transition:opacity .5s ease;
     pointer-events:none; user-select:none;
   }
   .anim #skip{ opacity:.7; }
-  #buildlog.gone ~ #skip{ opacity:0; }
+  #buildlog.gone ~ #skip, .drawing #skip{ opacity:0; }
 
   /* ---------------- petals ---------------- */
   #petals{ position:absolute; inset:0; z-index:2; pointer-events:none; overflow:hidden; }
@@ -235,11 +236,11 @@
       <div class="countdown reveal" id="countdown"></div>
     </div>
 
-    <div id="buildlog" aria-hidden="true"><div id="logscroll"></div></div>
-    <div id="skip" aria-hidden="true">tap anywhere · or press ⏎ to skip</div>
     <div id="petals" aria-hidden="true"></div>
   </main>
 
+  <div id="buildlog" aria-hidden="true"><div id="logscroll"></div></div>
+  <div id="skip" aria-hidden="true">tap anywhere · or press ⏎ to skip</div>
   <button id="replay" aria-label="Replay the animation">↻ redeploy</button>
 
 <script>
@@ -312,62 +313,84 @@
     cur.remove();
   }
 
-  /* a big, fast-flowing deploy log — the romance beats woven into real-looking output */
+  /* a full-screen, flowing log that tells our story — kept the bits we loved */
   function buildLines() {
     const L = [];
     const H = (t) => ({ c: "sec", t }), O = (t) => ({ c: "dim", t }),
-          K = (t) => ({ c: "ok", t }), W = (t) => ({ c: "warn", t });
+          K = (t) => ({ c: "ok", t }), W = (t) => ({ c: "warn", t }),
+          Q = (t) => ({ c: "quote", t });
+    const days = Math.max(1, Math.ceil((TARGET - Date.now()) / 864e5));
 
-    L.push(H("▸ git fetch origin && git merge blez --no-ff"));
-    L.push(O("remote: Enumerating objects: 100% (∞/∞), done."));
+    // —— our story, as a git history ——
+    L.push(H("▸ git log --reverse --pretty=story  ~/us"));
+    L.push(O("commit 0001f1f   init: two engineers meet at a standup"));
+    L.push(Q("           you reviewed my PR. zero comments. i was intrigued."));
+    L.push(O("commit a1c0ffe   feat: first date over coffee ☕"));
+    L.push(Q("           blez ordered an oat flat white. yuki ordered the same. (good sign)"));
+    L.push(O("commit c0ffee0   revert \"we should just be friends\""));
+    L.push(Q("           // glad we reverted this one"));
+    L.push(O("commit b1ec0de   fix(heart): resolve a conflict with logic, then with kindness"));
+    L.push(O("commit cafe777   chore: merge our coffee orders into one subscription ☕☕"));
+    L.push(O("commit d15c0de   perf: late-night calls now O(1), no matter the distance"));
+    L.push(O("commit 1ab1ee7   feat(travel): shipped a trip together → zero rollbacks"));
+    L.push(O("commit 5caff01   docs: learned each other's coffee, playlists, silences"));
+    L.push(O("commit 7a11de1   yuki: // TODO: marry blez"));
+    L.push(O("commit 8e21d6b   blez: LGTM 💍"));
+    L.push(O("commit 1f0c5aa   yuki: commit -m \"yes\" --amend"));
+    L.push(Q("           (it was always going to be yes)"));
+
+    // —— the merge ——
+    L.push(H("▸ git merge blez --no-ff   # keep every commit of how we got here"));
     L.push(O("Merging blez into main…"));
     L.push(K("✓ resolved 1 conflict in last-name.txt (kept both)"));
-    L.push(O("Signed-off-by: 💍"));
+    L.push(O("Signed-off-by: 💍   Reviewed-by: both of us"));
 
-    L.push(H("▸ npm install"));
-    const pkgs = [["react","18.3.1"],["react-dom","18.3.1"],["date-fns","3.6.0"],
-      ["trust","^10.0.0"],["patience","2.4.0"],["@cebu/sunsets","1.0.0"],
-      ["shared-playlists","7.7.7"],["inside-jokes","4.2.0"],["matching-socks","0.9.1"],
-      ["late-night-talks","3.3.0"],["adventure","^2.0.0"],["@us/forever","1.0.0"],
-      ["compromise","5.1.2"],["good-coffee","6.0.0"],["weekend-trips","2.2.2"],
-      ["@home/cebu","1.0.0"],["laughter","9.9.9"],["support","^4.0.0"],
-      ["date-night","5.0.4"],["typescript","5.5.4"]];
+    // —— install the things we can't live without ——
+    L.push(H("▸ npm install   # the things we can't live without"));
+    const pkgs = [["coffee","∞"],["same-coffee-order","2.1.0"],["slow-mornings","5.0.0"],
+      ["react","18.3.1"],["trust","^10.0.0"],["patience","2.4.0"],
+      ["inside-jokes","4.2.0"],["late-night-coding","3.3.0"],["weekend-trips","2.2.2"],
+      ["matching-playlists","7.7.7"],["@home/cebu","1.0.0"],["adventure","^2.0.0"],
+      ["good-coffee","6.0.0"],["dog-someday","0.1.0"],["laughter","9.9.9"],
+      ["support","^4.0.0"],["date-night","5.0.4"],["compromise","5.1.2"],
+      ["@us/forever","1.0.0"],["typescript","5.5.4"]];
     pkgs.forEach(([n, v]) => L.push(O("+ " + n + "@" + v)));
     L.push(W("npm warn peer in-laws@^2.0.0: found in-laws@1.0.0 — proceeding anyway"));
-    L.push(O("added 214 packages, audited 215 in 3.7s"));
-    L.push(O("found 0 vulnerabilities"));
+    L.push(O("added 214 packages, audited 215 in 3.7s · found 0 vulnerabilities"));
 
+    // —— build ——
     L.push(H("▸ vite build --target forever"));
     L.push(O("vite v5.3.1 building for production…"));
     ["vows","rings","venue","guests","playlist","first-dance","cake","toast"].forEach((m, i) =>
       L.push(O("transforming (" + ((i + 1) * 37) + ") src/" + m + ".ts")));
     L.push(O("✓ 296 modules transformed."));
-    L.push(O("rendering chunks…"));
     L.push(O("dist/index.html            1.92 kB │ gzip:  0.81 kB"));
-    L.push(O("dist/assets/paper.css      8.40 kB │ gzip:  2.11 kB"));
     L.push(O("dist/assets/calla-lily.svg 3.07 kB │ gzip:  1.18 kB"));
     L.push(O("dist/assets/vows.js      214.18 kB │ gzip: 71.04 kB"));
-    L.push(K("✓ built in 307d"));
+    L.push(K("✓ built in " + days + "d"));
 
+    // —— tests ——
     L.push(H("▸ vitest run"));
-    ["we make each other laugh","handles long-distance","splits the bill fairly",
-     "remembers the small things","says sorry first","shares the last bite",
-     "survives ikea together","stays calm in production","keeps its promises",
-     "merges schedules without conflict","has each other's back","renders support on demand"
+    ["makes two cups of coffee, every morning ☕","we make each other laugh",
+     "handles long-distance","says sorry first","shares the last bite",
+     "remembers the small things","stays calm in production","keeps its promises",
+     "splits the bill fairly","has each other's back","survives ikea together",
+     "merges schedules without conflict"
     ].forEach((t) => L.push(K("  ✓ " + t)));
     L.push(O("  ↓ cold-feet.test.ts (skipped)"));
-    L.push(O("  Test Files  9 passed (9)"));
-    L.push(O("  Tests  41 passed · 1 skipped (42)"));
+    L.push(O("  Test Files  9 passed (9)   ·   Tests  41 passed · 1 skipped (42)"));
 
+    // —— deploy ——
     L.push(H("▸ deploy --prod --region ap-southeast-cebu"));
     L.push(W("compiling vows… 1 error: too many to fit (warning suppressed)"));
     L.push(K("✓ booking venue… Cebu, Philippines"));
     L.push(K("✓ provisioning forever… this may take a while"));
     L.push(O("uploading 248 files to production…"));
-    ["index.html","paper.css","calla-lily.svg","vows.js","rings.png","playlist.json"].forEach((f) =>
+    ["index.html","paper.css","calla-lily.svg","vows.js","rings.png","two-cups.coffee"].forEach((f) =>
       L.push(O("↑ dist/" + f)));
     L.push(O("invalidating CDN cache… done"));
     L.push(K("✔ https://yuki-and-blez.wedding · 200 OK"));
+    L.push(O("rendering the rest of our lives…"));
     return L;
   }
 
@@ -376,7 +399,7 @@
     for (let i = 0; i < L.length; i++) {
       if (done) break;
       line(`<span class="${L[i].c}">${L[i].t}</span>`);
-      await sleep(L[i].c === "sec" ? 95 : (34 + (i % 4 === 0 ? 12 : 0)));
+      await sleep(L[i].c === "sec" ? 120 : L[i].c === "quote" ? 80 : (32 + (i % 4 === 0 ? 12 : 0)));
     }
     await sleep(done ? 0 : 160);
   }
@@ -387,7 +410,7 @@
   };
 
   async function drawArtifact() {
-    card.classList.add("drawing");
+    html.classList.add("drawing");
     lilyWrap.classList.remove("drawn");
     void lilyWrap.offsetWidth;
     lilyWrap.classList.add("draw");          // triggers the line "drawing itself"
@@ -410,7 +433,7 @@
   function reveal() {
     log.style.opacity = "0";
     log.classList.add("gone");
-    card.classList.remove("drawing");        // fades the % caption out
+    html.classList.remove("drawing");        // fades the % caption out
     skip.style.opacity = "0";
     lilyWrap.classList.add("drawn");          // pin the lily fully shown
     letters.forEach((el, i) => { el.style.animationDelay = (0.15 + i * 0.06) + "s"; });
@@ -452,7 +475,7 @@
     done = false; running = false; invokeAmend = true;
     logscroll.innerHTML = ""; log.classList.remove("gone");
     log.style.opacity = ""; log.scrollTop = 0;
-    card.classList.remove("show", "drawing");
+    card.classList.remove("show"); html.classList.remove("drawing");
     lilyWrap.classList.remove("draw", "drawn");
     artifact.innerHTML = "";
     skip.style.opacity = ""; replay.classList.remove("show");
