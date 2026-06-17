@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Save the Date · Yuki &amp; Blez</title>
+<meta name="description" content="./deploy --partner=blez --no-ff → April 18, 2027 · Cebu, Philippines" />
+<script>
+  // no-JS / crawler fallback: default markup shows the finished card.
+  // Opt INTO the animation only when JS runs and motion is wanted.
+  (function () {
+    var h = document.documentElement;
+    var formal = /[?&]formal\b/.test(location.search);
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    h.className = "js" + (formal || reduce ? "" : " anim");
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper-hi:#f6f3ec;
+    --paper:#f4efe2;
+    --paper-lo:#efe7d4;
+    --ink:#2b2b28;
+    --ink-soft:#6c6a60;
+    --log:#8a857a;
+    --log-warm:#a98e6b;
+    --emerald:#3f7a4d;
+    --emerald-deep:#2e6b41;
+    --serif:"Cormorant Garamond","EB Garamond","Hoefler Text",Garamond,Georgia,serif;
+    --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background:#e9e2d2;
+    color:var(--ink);
+    font-family:var(--serif);
+    display:grid; place-items:center;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  /* ---------------- the card ---------------- */
+  .card{
+    position:relative;
+    width:min(92vw, calc(96vh * 0.7094));
+    aspect-ratio:1240/1748;
+    max-height:96vh;
+    background:radial-gradient(125% 100% at 50% 36%, var(--paper-hi) 0%, var(--paper) 52%, var(--paper-lo) 100%);
+    border-radius:3px;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.7) inset,
+      0 0 60px -30px rgba(90,80,50,.5) inset,
+      0 40px 90px -34px rgba(40,46,34,.55),
+      0 10px 26px -16px rgba(40,46,34,.4);
+    overflow:hidden;
+    display:flex; flex-direction:column; align-items:center;
+    padding:7.5% 8% 6%;
+    container-type:inline-size;
+  }
+  .anim .card{ animation:breathe 9s ease-in-out 12s infinite; }
+  @keyframes breathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.004); } }
+
+  .card::before{
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    mix-blend-mode:multiply; opacity:.05;
+  }
+  .card > *{ position:relative; z-index:2; }
+
+  /* ---------------- final card content ---------------- */
+  .title{
+    margin-top:9.5cqw;
+    font-weight:500;
+    font-size:9.4cqw;
+    line-height:1;
+    letter-spacing:0.11em;
+    color:var(--ink);
+    display:flex; align-items:baseline; justify-content:center; gap:.14em;
+    white-space:nowrap;
+    padding-left:0.10em;
+  }
+  .title .the{
+    font-style:italic; font-weight:500; font-size:.6em; letter-spacing:.02em;
+    color:var(--ink-soft); transform:translateY(-.05em);
+  }
+  .date{ margin-top:1.1em; font-size:5cqw; letter-spacing:0.34em; color:var(--ink); padding-left:0.34em; }
+
+  .lily-wrap{
+    position:relative;
+    margin-top:10.5cqw;
+    width:50%;
+    align-self:center;
+    transform:translateX(6%);   /* slight rightward bias, matching the original */
+  }
+  .lily-img{ width:100%; height:auto; display:block; -webkit-user-drag:none; user-select:none; }
+  .anim .lily-img{ clip-path:inset(0 100% 0 0); }
+  .anim .lily-wrap.draw .lily-img{ animation:lilyReveal var(--draw,2.4s) cubic-bezier(.5,.05,.28,.99) forwards; }
+  .anim .lily-wrap.drawn .lily-img{ clip-path:none !important; animation:none !important; }
+  @keyframes lilyReveal{
+    from{ clip-path:inset(0 100% 0 0); }
+    to{   clip-path:inset(0 -3% 0 0); }
+  }
+  .ink-front{
+    position:absolute; top:-12%; bottom:-12%; left:0; width:9%;
+    background:radial-gradient(closest-side, rgba(63,122,77,.5), rgba(63,122,77,0) 78%);
+    opacity:0; pointer-events:none; z-index:3;
+  }
+  .anim .lily-wrap.draw .ink-front{ animation:inkFront var(--draw,2.4s) cubic-bezier(.5,.05,.28,.99) forwards; }
+  @keyframes inkFront{ 0%{ left:-10%; opacity:0; } 10%{ opacity:.9; } 86%{ opacity:.85; } 100%{ left:98%; opacity:0; } }
+
+  #artifact{
+    position:absolute; top:104%; left:50%; transform:translateX(-50%);
+    font-family:var(--mono); font-size:clamp(8.5px,2.1cqw,11.5px); letter-spacing:.02em;
+    color:var(--log); white-space:nowrap; opacity:0; transition:opacity .35s ease; z-index:4;
+  }
+  .card.drawing #artifact{ opacity:1; }
+  #artifact .bar{ color:var(--emerald); letter-spacing:0; }
+  #artifact .ok{ color:var(--emerald-deep); }
+
+  .lower{ margin-top:auto; width:100%; display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .follow{ font-size:4.6cqw; letter-spacing:.03em; color:var(--ink); }
+  .names{ margin-top:.2em; font-size:6cqw; font-weight:500; letter-spacing:.04em; color:var(--ink); }
+  .names .amp{ font-style:italic; color:var(--emerald-deep); padding:0 .06em; }
+  .divider{ width:1px; height:11cqw; margin:7cqw 0 6cqw; overflow:hidden;
+    background:repeating-linear-gradient(to bottom, var(--ink-soft) 0 1.5px, transparent 1.5px 7px); opacity:.5; }
+  .place{ font-size:4.4cqw; letter-spacing:.08em; color:var(--ink); }
+  .countdown{ margin-top:6cqw; font-size:3cqw; letter-spacing:.22em; color:var(--ink-soft);
+    font-style:italic; opacity:.72; text-align:center; text-transform:lowercase; }
+
+  /* reveal transitions */
+  .reveal{ transition:opacity 1s ease, transform 1s cubic-bezier(.2,.8,.2,1); }
+  .anim .reveal{ opacity:0; transform:translateY(10px); }
+  .card.show .reveal{ opacity:1; transform:none; }
+  .title .ch{ display:inline-block; }
+  .anim .title .ch{ opacity:0; transform:translateY(18px); }
+  .card.show .title .ch{ animation:letter .85s cubic-bezier(.2,.85,.25,1) forwards; }
+  @keyframes letter{ to{ opacity:1; transform:none; } }
+
+  /* ---------------- build log (wide, tall, flowing) ---------------- */
+  #buildlog{
+    position:absolute; z-index:3; left:50%; top:6.5cqw;
+    transform:translateX(-50%);
+    width:90cqw; height:120cqw;
+    overflow-y:scroll; scrollbar-width:none;
+    font-family:var(--mono);
+    font-size:clamp(7.5px, 1.95cqw, 10.5px);
+    line-height:1.5;
+    color:var(--log);
+    display:none;
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 8%, #000 84%, transparent 100%);
+            mask-image:linear-gradient(to bottom, transparent 0, #000 8%, #000 84%, transparent 100%);
+    transition:opacity .55s ease, filter .55s ease, transform .55s ease;
+  }
+  #buildlog::-webkit-scrollbar{ display:none; }
+  .anim #buildlog{ display:block; }
+  #logscroll{ padding:0 3cqw; }
+  #buildlog .ln{ white-space:normal; overflow-wrap:anywhere; }
+  #buildlog .sec{ color:#54514a; }
+  #buildlog .ok{ color:var(--emerald-deep); }
+  #buildlog .warn{ color:var(--log-warm); }
+  #buildlog .dim{ color:#aaa495; }
+  #buildlog .cur{ display:inline-block; width:.55em; height:1.02em; background:#54514a;
+    transform:translateY(2px); margin-left:1px; animation:blink 1.05s steps(1) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+  #buildlog.gone{ opacity:0; filter:blur(3px); transform:translateX(-50%) translateY(-10px); pointer-events:none; }
+  .card.drawing #buildlog{ opacity:.12; }
+  .card.drawing .lily-wrap{ z-index:6; }
+
+  #skip{
+    position:absolute; z-index:5; left:0; right:0; bottom:5.5%; text-align:center;
+    font-family:var(--mono); font-size:clamp(9px,2cqw,11px);
+    color:#b7b1a3; letter-spacing:.05em; opacity:0; transition:opacity .5s ease;
+    pointer-events:none; user-select:none;
+  }
+  .anim #skip{ opacity:.7; }
+  #buildlog.gone ~ #skip{ opacity:0; }
+
+  /* ---------------- petals ---------------- */
+  #petals{ position:absolute; inset:0; z-index:2; pointer-events:none; overflow:hidden; }
+  .petal{ position:absolute; top:-8%; will-change:transform,opacity; opacity:0; }
+  @keyframes fall{
+    0%{ opacity:0; transform:translateY(-8%) translateX(0) rotate(0); }
+    10%{ opacity:.2; } 88%{ opacity:.16; }
+    100%{ opacity:0; transform:translateY(112%) translateX(var(--drift,30px)) rotate(var(--spin,220deg)); }
+  }
+
+  /* ---------------- replay ---------------- */
+  #replay{
+    position:fixed; right:16px; bottom:14px; z-index:40;
+    font-family:var(--mono); font-size:12px; letter-spacing:.03em;
+    color:#8a8576; background:rgba(255,255,255,.5);
+    border:1px solid rgba(120,110,80,.25); border-radius:999px;
+    padding:7px 14px; cursor:pointer; opacity:0; pointer-events:none;
+    transition:opacity .6s ease, color .2s, border-color .2s, background .2s;
+    backdrop-filter:blur(5px);
+  }
+  #replay.show{ opacity:.85; pointer-events:auto; }
+  #replay:hover{ color:var(--emerald-deep); border-color:rgba(47,107,64,.55); background:rgba(255,255,255,.8); opacity:1; }
+  html:not(.anim) #replay{ display:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    .anim .card{ animation:none; }
+    .petal{ display:none; }
+  }
+</style>
+</head>
+<body>
+  <main class="card" id="card" aria-label="Save the Date — Yuki and Blez">
+
+    <h1 class="title reveal" aria-label="Save the Date">
+      <span class="w" data-text="SAVE"></span>
+      <span class="the">the</span>
+      <span class="w" data-text="DATE"></span>
+    </h1>
+
+    <div class="date reveal">APRIL 18, 2027</div>
+
+    <!-- one continuous stroke. like us. no breakpoints. -->
+    <div class="lily-wrap" aria-hidden="true">
+      <img class="lily-img" src="assets/lily.png" alt="A hand-drawn emerald calla lily" />
+      <span class="ink-front"></span>
+      <div id="artifact" aria-hidden="true"></div>
+    </div>
+
+    <div class="lower">
+      <div class="follow reveal">Formal invitation to follow</div>
+      <div class="names reveal">Yuki <span class="amp">&amp;</span> Blez</div>
+      <div class="divider reveal"></div>
+      <div class="place reveal">Cebu, Philippines</div>
+      <div class="countdown reveal" id="countdown"></div>
+    </div>
+
+    <div id="buildlog" aria-hidden="true"><div id="logscroll"></div></div>
+    <div id="skip" aria-hidden="true">tap anywhere · or press ⏎ to skip</div>
+    <div id="petals" aria-hidden="true"></div>
+  </main>
+
+  <button id="replay" aria-label="Replay the animation">↻ redeploy</button>
+
+<script>
+(() => {
+  "use strict";
+  const html = document.documentElement;
+  const ANIM = html.classList.contains("anim");
+  const $ = (s) => document.querySelector(s);
+  const card = $("#card"), log = $("#buildlog"), logscroll = $("#logscroll"),
+        skip = $("#skip"), replay = $("#replay"), countdownEl = $("#countdown"),
+        artifact = $("#artifact"), lilyWrap = $(".lily-wrap");
+
+  document.querySelectorAll(".title .w").forEach((w) => {
+    [...w.getAttribute("data-text")].forEach((c) => {
+      const s = document.createElement("span"); s.className = "ch"; s.textContent = c; w.appendChild(s);
+    });
+  });
+  const letters = document.querySelectorAll(".title .ch");
+
+  /* console love-note (always prints) */
+  (function loveNote() {
+    const head = "font:600 20px/1.5 'Cormorant Garamond',Georgia,serif;color:#3f7a4d";
+    const m = "font:12px/1.6 ui-monospace,Menlo,monospace;color:#3f7a4d";
+    const tip = "font:11px/1.6 ui-monospace,monospace;color:#a98e6b";
+    try {
+      console.log("%c  Save the Date — Yuki & Blez", head);
+      console.log(
+        "%c$ git log --oneline ~/us\n" +
+        "* 7e44b1a (HEAD -> main, tag: 2027-04-18)  Merge branch 'blez' --no-ff\n" +
+        "* 1a2b3c4  feat(cebu): set venue, await formal invite\n" +
+        "* c0ffee0  revert \"we should just be friends\"   // glad we reverted this one\n" +
+        "* 0001f1f  init: two engineers meet at a standup", m);
+      console.log("%ctip: this card honors ?formal and prefers-reduced-motion", tip);
+    } catch (e) {}
+  })();
+
+  /* live countdown (serif, days only) */
+  const TARGET = new Date("2027-04-18T00:00:00+08:00").getTime();
+  function renderCountdown() {
+    const days = Math.ceil((TARGET - Date.now()) / 864e5);
+    countdownEl.textContent = days > 1 ? `${days} days until launch`
+      : days === 1 ? "one day until launch"
+      : days === 0 ? "today — deploying to production" : "merged · forever";
+  }
+  renderCountdown();
+
+  if (!ANIM) { return; }
+
+  /* ============================ animation ============================ */
+  card.classList.remove("show");
+  const DRAW_MS = 2400;
+  let timers = [], rafId = 0, running = false, done = false, invokeAmend = false;
+  const sleep = (ms) => new Promise((r) => timers.push(setTimeout(r, ms)));
+  const clearAll = () => { timers.forEach(clearTimeout); timers = []; cancelAnimationFrame(rafId); };
+
+  function line(html) { const d = document.createElement("div"); d.className = "ln"; d.innerHTML = html; logscroll.appendChild(d); log.scrollTop = log.scrollHeight; return d; }
+
+  async function typeInvoke() {
+    const cmd = invokeAmend ? `git commit --amend "our future"` : `./deploy --partner=blez --no-ff`;
+    const d = line(`<span class="sec">yuki@cebu ~/forever $</span> <span class="cmd"></span>`);
+    const span = d.querySelector(".cmd");
+    const cur = document.createElement("span"); cur.className = "cur"; span.appendChild(cur);
+    for (let i = 0; i < cmd.length; i++) {
+      if (done) { cur.insertAdjacentText("beforebegin", cmd.slice(i)); break; }
+      cur.insertAdjacentText("beforebegin", cmd[i]);
+      log.scrollTop = log.scrollHeight;
+      await sleep(24 + (cmd[i] === " " ? 10 : 0));
+    }
+    await sleep(done ? 0 : 280);
+    cur.remove();
+  }
+
+  /* a big, fast-flowing deploy log — the romance beats woven into real-looking output */
+  function buildLines() {
+    const L = [];
+    const H = (t) => ({ c: "sec", t }), O = (t) => ({ c: "dim", t }),
+          K = (t) => ({ c: "ok", t }), W = (t) => ({ c: "warn", t });
+
+    L.push(H("▸ git fetch origin && git merge blez --no-ff"));
+    L.push(O("remote: Enumerating objects: 100% (∞/∞), done."));
+    L.push(O("Merging blez into main…"));
+    L.push(K("✓ resolved 1 conflict in last-name.txt (kept both)"));
+    L.push(O("Signed-off-by: 💍"));
+
+    L.push(H("▸ npm install"));
+    const pkgs = [["react","18.3.1"],["react-dom","18.3.1"],["date-fns","3.6.0"],
+      ["trust","^10.0.0"],["patience","2.4.0"],["@cebu/sunsets","1.0.0"],
+      ["shared-playlists","7.7.7"],["inside-jokes","4.2.0"],["matching-socks","0.9.1"],
+      ["late-night-talks","3.3.0"],["adventure","^2.0.0"],["@us/forever","1.0.0"],
+      ["compromise","5.1.2"],["good-coffee","6.0.0"],["weekend-trips","2.2.2"],
+      ["@home/cebu","1.0.0"],["laughter","9.9.9"],["support","^4.0.0"],
+      ["date-night","5.0.4"],["typescript","5.5.4"]];
+    pkgs.forEach(([n, v]) => L.push(O("+ " + n + "@" + v)));
+    L.push(W("npm warn peer in-laws@^2.0.0: found in-laws@1.0.0 — proceeding anyway"));
+    L.push(O("added 214 packages, audited 215 in 3.7s"));
+    L.push(O("found 0 vulnerabilities"));
+
+    L.push(H("▸ vite build --target forever"));
+    L.push(O("vite v5.3.1 building for production…"));
+    ["vows","rings","venue","guests","playlist","first-dance","cake","toast"].forEach((m, i) =>
+      L.push(O("transforming (" + ((i + 1) * 37) + ") src/" + m + ".ts")));
+    L.push(O("✓ 296 modules transformed."));
+    L.push(O("rendering chunks…"));
+    L.push(O("dist/index.html            1.92 kB │ gzip:  0.81 kB"));
+    L.push(O("dist/assets/paper.css      8.40 kB │ gzip:  2.11 kB"));
+    L.push(O("dist/assets/calla-lily.svg 3.07 kB │ gzip:  1.18 kB"));
+    L.push(O("dist/assets/vows.js      214.18 kB │ gzip: 71.04 kB"));
+    L.push(K("✓ built in 307d"));
+
+    L.push(H("▸ vitest run"));
+    ["we make each other laugh","handles long-distance","splits the bill fairly",
+     "remembers the small things","says sorry first","shares the last bite",
+     "survives ikea together","stays calm in production","keeps its promises",
+     "merges schedules without conflict","has each other's back","renders support on demand"
+    ].forEach((t) => L.push(K("  ✓ " + t)));
+    L.push(O("  ↓ cold-feet.test.ts (skipped)"));
+    L.push(O("  Test Files  9 passed (9)"));
+    L.push(O("  Tests  41 passed · 1 skipped (42)"));
+
+    L.push(H("▸ deploy --prod --region ap-southeast-cebu"));
+    L.push(W("compiling vows… 1 error: too many to fit (warning suppressed)"));
+    L.push(K("✓ booking venue… Cebu, Philippines"));
+    L.push(K("✓ provisioning forever… this may take a while"));
+    L.push(O("uploading 248 files to production…"));
+    ["index.html","paper.css","calla-lily.svg","vows.js","rings.png","playlist.json"].forEach((f) =>
+      L.push(O("↑ dist/" + f)));
+    L.push(O("invalidating CDN cache… done"));
+    L.push(K("✔ https://yuki-and-blez.wedding · 200 OK"));
+    return L;
+  }
+
+  async function streamLog() {
+    const L = buildLines();
+    for (let i = 0; i < L.length; i++) {
+      if (done) break;
+      line(`<span class="${L[i].c}">${L[i].t}</span>`);
+      await sleep(L[i].c === "sec" ? 95 : (34 + (i % 4 === 0 ? 12 : 0)));
+    }
+    await sleep(done ? 0 : 160);
+  }
+
+  const artLine = (t) => {
+    const f = Math.round(t * 14);
+    return `rendering calla-lily.svg <span class="bar">[${"█".repeat(f)}${"░".repeat(14 - f)}]</span> ${String(Math.round(t * 100)).padStart(3, " ")}%`;
+  };
+
+  async function drawArtifact() {
+    card.classList.add("drawing");
+    lilyWrap.classList.remove("drawn");
+    void lilyWrap.offsetWidth;
+    lilyWrap.classList.add("draw");          // triggers the line "drawing itself"
+    artifact.innerHTML = artLine(0);
+    const start = performance.now();
+    let stop = false;
+    const tick = () => {
+      const t = Math.min(1, (performance.now() - start) / DRAW_MS);
+      artifact.innerHTML = artLine(t);
+      if (!stop && t < 1 && !done) rafId = requestAnimationFrame(tick);
+    };
+    tick();
+    await sleep(done ? 0 : DRAW_MS + 80);
+    stop = true; cancelAnimationFrame(rafId);
+    artifact.innerHTML = `calla-lily.svg <span class="bar">[${"█".repeat(14)}]</span> 100% <span class="ok">✓</span>`;
+    lilyWrap.classList.add("drawn");
+    await sleep(done ? 0 : 520);
+  }
+
+  function reveal() {
+    log.style.opacity = "0";
+    log.classList.add("gone");
+    card.classList.remove("drawing");        // fades the % caption out
+    skip.style.opacity = "0";
+    lilyWrap.classList.add("drawn");          // pin the lily fully shown
+    letters.forEach((el, i) => { el.style.animationDelay = (0.15 + i * 0.06) + "s"; });
+    $(".names").style.transitionDelay = ".15s";
+    $(".place").style.transitionDelay = ".3s";
+    $(".date").style.transitionDelay = ".05s";
+    countdownEl.style.transitionDelay = ".5s";
+    requestAnimationFrame(() => card.classList.add("show"));
+    renderCountdown();
+    setTimeout(startPetals, 1200);
+    setTimeout(() => replay.classList.add("show"), 2600);
+  }
+
+  async function run() {
+    if (running) return; running = true; done = false;
+    card.classList.remove("show");
+    await Promise.race([
+      document.fonts ? document.fonts.ready : Promise.resolve(),
+      new Promise((r) => setTimeout(r, 2500)),
+    ]);
+    await typeInvoke();
+    if (!done) await streamLog();
+    if (!done) await drawArtifact();
+    if (!done) await sleep(360);
+    reveal();
+    running = false;
+  }
+
+  function skipToEnd() {
+    if (done || !running) return;
+    done = true; clearAll();
+    lilyWrap.classList.remove("draw");
+    lilyWrap.classList.add("drawn");
+    reveal(); running = false;
+  }
+
+  function restart() {
+    clearAll(); stopPetals();
+    done = false; running = false; invokeAmend = true;
+    logscroll.innerHTML = ""; log.classList.remove("gone");
+    log.style.opacity = ""; log.scrollTop = 0;
+    card.classList.remove("show", "drawing");
+    lilyWrap.classList.remove("draw", "drawn");
+    artifact.innerHTML = "";
+    skip.style.opacity = ""; replay.classList.remove("show");
+    document.querySelectorAll(".title .ch").forEach((el) => { el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; });
+    run();
+  }
+
+  /* petals */
+  const PETAL = `<svg width="13" height="13" viewBox="0 0 14 14"><path d="M7 0 C 11 4 11 10 7 14 C 3 10 3 4 7 0 Z" fill="#4d8a5b"/></svg>`;
+  let petalIv = 0;
+  function makePetal() {
+    const p = document.createElement("div"); p.className = "petal"; p.innerHTML = PETAL;
+    const sz = 7 + Math.random() * 7;
+    p.style.left = (Math.random() * 100) + "%"; p.style.width = sz + "px";
+    const dur = 11 + Math.random() * 9;
+    p.style.setProperty("--drift", (Math.random() * 80 - 40) + "px");
+    p.style.setProperty("--spin", (Math.random() * 480 - 200) + "deg");
+    p.style.animation = `fall ${dur}s linear forwards`;
+    $("#petals").appendChild(p);
+    timers.push(setTimeout(() => p.remove(), dur * 1000 + 200));
+  }
+  function startPetals() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    makePetal(); petalIv = setInterval(makePetal, 2600); timers.push(petalIv);
+  }
+  function stopPetals() { clearInterval(petalIv); document.querySelectorAll(".petal").forEach((p) => p.remove()); }
+
+  /* interactions */
+  card.addEventListener("click", () => { if (running && !done) skipToEnd(); else restart(); });
+  replay.addEventListener("click", (e) => { e.stopPropagation(); restart(); });
+  window.addEventListener("keydown", (e) => {
+    if (running && !done && (e.key === "Enter" || e.key === " " || e.key === "Escape")) { e.preventDefault(); skipToEnd(); }
+  });
+  lilyWrap.addEventListener("mouseenter", () => {
+    if (running) return;
+    lilyWrap.classList.remove("drawn"); void lilyWrap.offsetWidth; lilyWrap.classList.add("draw");
+    setTimeout(() => lilyWrap.classList.add("drawn"), DRAW_MS + 40);
+  });
+  let buf = "";
+  window.addEventListener("keydown", (e) => {
+    buf = (buf + e.key).slice(-3).toLowerCase();
+    if (buf === "git" && !running) {
+      lilyWrap.classList.remove("drawn"); void lilyWrap.offsetWidth; lilyWrap.classList.add("draw");
+      setTimeout(() => lilyWrap.classList.add("drawn"), DRAW_MS + 40);
+    }
+  });
+
+  run();
+})();
+</script>
+</body>
+</html>
