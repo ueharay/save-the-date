@@ -11,8 +11,10 @@
   (function () {
     var h = document.documentElement;
     var formal = /[?&]formal\b/.test(location.search);
-    // Always animate (this is a one-off invite, not a general app). Only ?formal opts out.
-    h.className = "js" + (formal ? "" : " anim");
+    // Animate on phones only. On desktop (and ?formal) show the static card — no
+    // intro, no WebGL background, no idle motion. This invite is made for phones.
+    var phone = window.matchMedia && window.matchMedia("(max-aspect-ratio: 71/100)").matches;
+    h.className = "js" + (phone && !formal ? " anim" : "");
   })();
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -120,7 +122,7 @@
     transform:translateX(6%);   /* slight rightward bias, matching the original */
   }
   .lily-img{ width:100%; height:auto; display:block; -webkit-user-drag:none; user-select:none;
-    transform-origin:50% 90%; animation:lilySway 8s ease-in-out infinite; }
+    transform-origin:50% 90%; }
   .anim .lily-img{ clip-path:inset(0 100% 0 0); -webkit-clip-path:inset(0 100% 0 0); animation:none; }
   .anim .lily-wrap.draw .lily-img{ animation:lilyReveal var(--draw,2.4s) cubic-bezier(.5,.05,.28,.99) forwards; }
   .anim .lily-wrap.drawn .lily-img{ clip-path:none !important; -webkit-clip-path:none !important; animation:lilySway 8s ease-in-out infinite !important; }
@@ -161,7 +163,7 @@
   .sheen{ position:absolute; inset:0; z-index:4; pointer-events:none;
     background:linear-gradient(108deg, transparent 41%, rgba(255,255,255,.4) 50%, transparent 59%);
     background-size:280% 100%; background-position:140% 0; opacity:0; mix-blend-mode:soft-light; }
-  .card.show .sheen, html:not(.anim) .sheen{ animation:sheen 13s ease-in-out 4.5s infinite; }
+  .card.show .sheen{ animation:sheen 13s ease-in-out 4.5s infinite; }
   @keyframes sheen{ 0%{ background-position:150% 0; opacity:0; } 20%{ opacity:.4; } 45%{ opacity:.24; } 70%,100%{ background-position:-50% 0; opacity:0; } }
 
   /* reveal transitions */
@@ -320,8 +322,14 @@
     const h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4), s = Math.floor(ms % 6e4 / 1e3);
     countdownEl.textContent = `${days} days · ${pad(h)}:${pad(m)}:${pad(s)} until launch`;
   }
-  renderCountdown();
-  setInterval(renderCountdown, 1000);   // live, ticking every second
+  if (ANIM) {
+    renderCountdown();
+    setInterval(renderCountdown, 1000);   // phones: live, ticking every second
+  } else {
+    const d = Math.ceil((TARGET - Date.now()) / 864e5);   // desktop: static, days only
+    countdownEl.textContent = isNaN(d) ? "April 18, 2027 · Cebu"
+      : d > 0 ? d + " days until launch" : "today — deploying to production";
+  }
 
   if (!ANIM) { return; }
 
@@ -547,6 +555,8 @@
 (async () => {
   const canvas = document.getElementById("bg");
   if (!canvas) return;
+  // phones only — on desktop / ?formal there is no animation at all
+  if (!document.documentElement.classList.contains("anim")) return;
   let THREE;
   try { THREE = await import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"); }
   catch (e) { return; }
