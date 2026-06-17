@@ -44,12 +44,15 @@
     text-rendering:optimizeLegibility;
   }
 
+  /* ---------------- WebGL background (three.js) ---------------- */
+  #bg{ position:fixed; inset:0; z-index:0; display:block; }
+
   /* ---------------- the card ---------------- */
   .card{
-    position:relative;
-    width:min(92vw, calc(96vh * 0.7094));
+    position:relative; z-index:1;
+    width:min(90vw, calc(92vh * 0.7094));
     aspect-ratio:1240/1748;
-    max-height:96vh;
+    max-height:92vh;
     background:radial-gradient(125% 100% at 50% 36%, var(--paper-hi) 0%, var(--paper) 52%, var(--paper-lo) 100%);
     border-radius:3px;
     box-shadow:
@@ -64,6 +67,25 @@
   }
   .anim .card{ animation:breathe 9s ease-in-out 12s infinite; }
   @keyframes breathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.004); } }
+
+  /* phones: the card fills the screen edge-to-edge (a mobile-native size) */
+  @media (max-aspect-ratio: 71/100){
+    .card{
+      width:100vw; height:100vh; height:100dvh;
+      max-height:none; aspect-ratio:auto;
+      border-radius:0;
+      padding:13vw 9vw 11vw;
+      box-shadow:0 0 90px -40px rgba(90,80,50,.45) inset;
+    }
+    .anim .card{ animation:none; }
+  }
+
+  /* during the log phase the card is transparent so the WebGL flows behind it;
+     it fades to paper as the lily is drawn */
+  .anim .card{ background:transparent; transition:background .7s ease; }
+  .anim.drawing .card, .anim .card.show{
+    background:radial-gradient(125% 100% at 50% 36%, var(--paper-hi) 0%, var(--paper) 52%, var(--paper-lo) 100%);
+  }
 
   .card::before{
     content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
@@ -150,7 +172,7 @@
     font-size:clamp(8px, 1.45vw, 13px);
     line-height:1.6;
     color:var(--log);
-    background:radial-gradient(135% 100% at 50% 26%, var(--paper-hi) 0%, var(--paper) 55%, var(--paper-lo) 100%);
+    background:radial-gradient(135% 100% at 50% 26%, rgba(246,243,236,.9) 0%, rgba(244,239,226,.84) 55%, rgba(239,231,219,.84) 100%);
     display:none;
     -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 6%, #000 90%, transparent 100%);
             mask-image:linear-gradient(to bottom, transparent 0, #000 6%, #000 90%, transparent 100%);
@@ -211,6 +233,7 @@
 </style>
 </head>
 <body>
+  <canvas id="bg" aria-hidden="true"></canvas>
   <main class="card" id="card" aria-label="Save the Date — Yuki and Blez">
 
     <h1 class="title reveal" aria-label="Save the Date">
@@ -406,7 +429,7 @@
 
   const artLine = (t) => {
     const f = Math.round(t * 14);
-    return `rendering calla-lily.svg <span class="bar">[${"█".repeat(f)}${"░".repeat(14 - f)}]</span> ${String(Math.round(t * 100)).padStart(3, " ")}%`;
+    return `drawing your save-the-date <span class="bar">[${"█".repeat(f)}${"░".repeat(14 - f)}]</span> ${String(Math.round(t * 100)).padStart(3, " ")}%`;
   };
 
   async function drawArtifact() {
@@ -425,7 +448,7 @@
     tick();
     await sleep(done ? 0 : DRAW_MS + 80);
     stop = true; cancelAnimationFrame(rafId);
-    artifact.innerHTML = `calla-lily.svg <span class="bar">[${"█".repeat(14)}]</span> 100% <span class="ok">✓</span>`;
+    artifact.innerHTML = `drawing your save-the-date <span class="bar">[${"█".repeat(14)}]</span> 100% <span class="ok">✓</span>`;
     lilyWrap.classList.add("drawn");
     await sleep(done ? 0 : 520);
   }
@@ -524,6 +547,87 @@
   });
 
   run();
+})();
+</script>
+
+<!-- WebGL ambient background: paper with slow-flowing emerald ink lines (three.js).
+     Loaded from a CDN; if it's unavailable or WebGL is unsupported, the page
+     gracefully falls back to the plain cream background — everything else works. -->
+<script type="module">
+(async () => {
+  const canvas = document.getElementById("bg");
+  if (!canvas) return;
+  let THREE;
+  try { THREE = await import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"); }
+  catch (e) { return; }
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: "low-power" }); }
+  catch (e) { return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.Camera();
+  const uniforms = { u_time: { value: 0 }, u_res: { value: new THREE.Vector2(1, 1) } };
+
+  const frag = `
+    precision highp float;
+    uniform float u_time; uniform vec2 u_res;
+    float hash(vec2 p){ p = fract(p*vec2(127.1,311.7)); p += dot(p, p+34.5); return fract(p.x*p.y); }
+    float noise(vec2 p){
+      vec2 i=floor(p), f=fract(p);
+      float a=hash(i), b=hash(i+vec2(1.,0.)), c=hash(i+vec2(0.,1.)), d=hash(i+vec2(1.,1.));
+      vec2 u=f*f*(3.-2.*f);
+      return mix(mix(a,b,u.x), mix(c,d,u.x), u.y);
+    }
+    float fbm(vec2 p){ float v=0., a=0.5; for(int i=0;i<4;i++){ v+=a*noise(p); p=p*2.02+vec2(7.1,3.3); a*=0.5; } return v; }
+    void main(){
+      vec2 uv = gl_FragCoord.xy / u_res.xy;
+      vec2 p = uv; p.x *= u_res.x / u_res.y;
+      float t = u_time * 0.035;
+      vec2 q = vec2(fbm(p*1.4 + vec2(0.0, t)), fbm(p*1.4 + vec2(4.7, -t)));
+      float f = fbm(p*2.0 + q*1.6 + vec2(t*0.4, t*0.2));
+      float lines = abs(fract(f*4.5) - 0.5) * 2.0;
+      float ink = smoothstep(0.16, 0.0, lines);
+      ink *= 0.45 + 0.55*fbm(p*0.7 - t*0.6);
+      vec3 cream = mix(vec3(0.961,0.945,0.902), vec3(0.937,0.906,0.831), uv.y);
+      vec3 emerald = vec3(0.247,0.478,0.302);
+      vec3 col = mix(cream, emerald, ink*0.16);
+      float vig = smoothstep(1.25, 0.3, length(uv-0.5));
+      col *= 0.93 + 0.07*vig;
+      gl_FragColor = vec4(col, 1.0);
+    }`;
+
+  const material = new THREE.ShaderMaterial({
+    uniforms,
+    vertexShader: "void main(){ gl_Position = vec4(position.xy, 0.0, 1.0); }",
+    fragmentShader: frag,
+  });
+  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material));
+
+  function resize() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    uniforms.u_res.value.set(canvas.width, canvas.height);
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { uniforms.u_time.value = 16.0; renderer.render(scene, camera); return; }
+
+  let raf = 0, start = 0, alive = true;
+  function loop(t) {
+    if (!alive) return;
+    if (!start) start = t;
+    uniforms.u_time.value = (t - start) * 0.001;
+    renderer.render(scene, camera);
+    raf = requestAnimationFrame(loop);
+  }
+  document.addEventListener("visibilitychange", () => {
+    alive = !document.hidden;
+    if (alive) { start = 0; raf = requestAnimationFrame(loop); }
+    else cancelAnimationFrame(raf);
+  });
+  raf = requestAnimationFrame(loop);
 })();
 </script>
 </body>
