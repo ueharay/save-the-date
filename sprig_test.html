@@ -1,0 +1,37 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+  :root{ --emerald:#3f7a4d; }
+  body{ margin:0; background:#f4efe2; display:grid; grid-auto-flow:column; place-items:center; height:100vh; gap:20px; }
+  .cell{ text-align:center; font:12px monospace; color:#3f7a4d; }
+  .sprig{ width:110px; height:auto; overflow:visible; }
+  .sprig path{ fill:none; stroke:var(--emerald); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; opacity:.8; }
+  .sprig .bud{ fill:var(--emerald); stroke:none; opacity:.85; transform-box:fill-box; transform-origin:center; }
+  .sprig .core{ fill:var(--emerald); stroke:none; opacity:.85; }
+  .bloom{ transform-box:fill-box; transform-origin:center bottom; }
+  /* four frozen frames of the opening */
+  .f0 .bloom{ transform:scale(.01) rotate(-22deg); opacity:0; } .f0 .bud{ opacity:.85; }
+  .f1 .bloom{ transform:scale(.45) rotate(-12deg); opacity:1; } .f1 .bud{ opacity:.4; }
+  .f2 .bloom{ transform:scale(.8) rotate(-5deg); opacity:1; } .f2 .bud{ opacity:.1; }
+  .f3 .bloom{ transform:scale(1); opacity:1; } .f3 .bud{ opacity:0; }
+</style></head><body>
+<div class="cell">bud<br><svg class="sprig f0" viewBox="0 0 64 150"></svg></div>
+<div class="cell">opening<br><svg class="sprig f1" viewBox="0 0 64 150"></svg></div>
+<div class="cell">opening<br><svg class="sprig f2" viewBox="0 0 64 150"></svg></div>
+<div class="cell">bloom<br><svg class="sprig f3" viewBox="0 0 64 150"></svg></div>
+<script>
+  const SVG = `
+    <path d="M32 146 C 28 118 35 100 32 72 C 30 50 33 32 32 16"/>
+    <path d="M32 116 C 19 109 11 114 15 126 C 24 124 29 121 32 116"/>
+    <path d="M32 90 C 45 83 53 88 49 100 C 40 98 35 95 32 90"/>
+    <path d="M32 62 C 20 56 13 60 17 71 C 25 69 29 66 32 62"/>
+    <path class="bud" d="M32 28 C 26 21 28 10 32 5 C 36 10 38 21 32 28 Z"/>
+    <g class="bloom">
+      <path class="fp" d="M32 15 C 27.5 11 28 5.5 32 2.5 C 36 5.5 36.5 11 32 15 Z"/>
+      <path class="fp" d="M32 15 C 27.5 11 28 5.5 32 2.5 C 36 5.5 36.5 11 32 15 Z" transform="rotate(52 32 15)"/>
+      <path class="fp" d="M32 15 C 27.5 11 28 5.5 32 2.5 C 36 5.5 36.5 11 32 15 Z" transform="rotate(-52 32 15)"/>
+      <path class="fp" d="M32 15 C 27.5 11 28 5.5 32 2.5 C 36 5.5 36.5 11 32 15 Z" transform="rotate(106 32 15)"/>
+      <path class="fp" d="M32 15 C 27.5 11 28 5.5 32 2.5 C 36 5.5 36.5 11 32 15 Z" transform="rotate(-106 32 15)"/>
+      <circle class="core" cx="32" cy="15" r="1.7"/>
+    </g>`;
+  document.querySelectorAll('.sprig').forEach(s => s.innerHTML = SVG);
+</script>
+</body></html>
