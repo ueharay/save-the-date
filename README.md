@@ -2,6 +2,8 @@
 
 An animated, self-contained Save the Date for two software engineers.
 
+**Live:** https://ueharay.github.io/save-the-date/
+
 Open `index.html` in any modern browser. It "deploys the wedding" as a tasteful
 charcoal-on-cream build log that streams by, draws the emerald calla lily as the
 final build artifact (a `[████] %` counter, the line revealing left-to-right),
