@@ -61,7 +61,7 @@
       0 40px 90px -34px rgba(40,46,34,.55),
       0 10px 26px -16px rgba(40,46,34,.4);
     overflow:hidden;
-    display:flex; flex-direction:column; align-items:center;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
     padding:7.5% 8% 6%;
     container-type:inline-size;
   }
@@ -96,7 +96,7 @@
 
   /* ---------------- final card content ---------------- */
   .title{
-    margin-top:9.5cqw;
+    margin-top:0;
     font-weight:500;
     font-size:9.4cqw;
     line-height:1;
@@ -114,7 +114,7 @@
 
   .lily-wrap{
     position:relative;
-    margin-top:10.5cqw;
+    margin-top:8cqw;
     width:50%;
     align-self:center;
     transform:translateX(6%);   /* slight rightward bias, matching the original */
@@ -146,7 +146,7 @@
   #artifact .bar{ color:var(--emerald); letter-spacing:0; }
   #artifact .ok{ color:var(--emerald-deep); }
 
-  .lower{ width:100%; display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .lower{ width:100%; margin-top:9cqw; display:flex; flex-direction:column; align-items:center; text-align:center; }
   .follow{ font-size:4.6cqw; letter-spacing:.03em; color:var(--ink); }
   .names{ margin-top:.2em; font-size:6cqw; font-weight:500; letter-spacing:.04em; color:var(--ink); }
   .names .amp{ font-style:italic; color:var(--emerald-deep); padding:0 .06em; }
@@ -156,29 +156,6 @@
   .countdown{ margin-top:6cqw; font-size:3cqw; letter-spacing:.18em; color:var(--ink-soft);
     font-style:italic; opacity:.72; text-align:center; text-transform:lowercase;
     font-variant-numeric:tabular-nums; }
-
-  /* middle ornament — a delicate sprig that fills the negative space */
-  .mid{ flex:1 1 auto; width:100%; display:flex; align-items:center; justify-content:center; min-height:0; }
-  .sprig{ width:21%; max-width:92px; height:auto; overflow:visible; transform-origin:50% 100%; }
-  .sprig path{ fill:none; stroke:var(--emerald); stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; opacity:.8; }
-  .sprig .bud{ fill:var(--emerald); stroke:none; opacity:.85; transform-box:fill-box; transform-origin:center; }
-  .sprig .core{ fill:var(--emerald); stroke:none; opacity:.85; }
-  .anim .sprig{ opacity:0; }
-  .card.show .sprig{ animation:sprigIn 1.3s ease .9s both, sprigSway 7s ease-in-out 2.2s infinite; }
-  html:not(.anim) .sprig{ animation:sprigSway 7s ease-in-out infinite; }
-  @keyframes sprigIn{ from{ opacity:0; transform:translateY(10px) scale(.92); } to{ opacity:1; transform:none; } }
-  @keyframes sprigSway{ 0%,100%{ transform:rotate(-1.4deg); } 50%{ transform:rotate(1.4deg); } }
-
-  /* the bud opens into a flower */
-  .bloom{ transform-box:fill-box; transform-origin:center bottom; }
-  .anim .bloom{ transform:scale(.01); opacity:0; }
-  html:not(.anim) .bud{ opacity:0; }
-  html:not(.anim) .bloom{ animation:bloomBreathe 6s ease-in-out infinite; }
-  .card.show .bud{ animation:budFade 1.2s ease 2.0s forwards; }
-  .card.show .bloom{ animation:bloomOpen 2s cubic-bezier(.34,1.4,.5,1) 2.1s forwards, bloomBreathe 6s ease-in-out 4.3s infinite; }
-  @keyframes bloomOpen{ 0%{ transform:scale(.01) rotate(-22deg); opacity:0; } 55%{ opacity:1; } 100%{ transform:scale(1) rotate(0); opacity:1; } }
-  @keyframes bloomBreathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.08); } }
-  @keyframes budFade{ to{ opacity:0; transform:scale(.4); } }
 
   /* soft light sheen drifting across the paper */
   .sheen{ position:absolute; inset:0; z-index:4; pointer-events:none;
@@ -202,10 +179,10 @@
     overflow-y:scroll; scrollbar-width:none;
     padding:4.5vh 5.5vw;
     font-family:var(--mono);
-    font-size:clamp(8px, 1.45vw, 13px);
-    line-height:1.6;
+    font-size:clamp(11.5px, 3.2vw, 15px);
+    line-height:1.85;
     color:var(--log);
-    background:radial-gradient(135% 100% at 50% 26%, rgba(246,243,236,.9) 0%, rgba(244,239,226,.84) 55%, rgba(239,231,219,.84) 100%);
+    background:radial-gradient(135% 100% at 50% 26%, rgba(246,243,236,.96) 0%, rgba(244,239,226,.92) 55%, rgba(239,231,219,.92) 100%);
     display:none;
     -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 6%, #000 90%, transparent 100%);
             mask-image:linear-gradient(to bottom, transparent 0, #000 6%, #000 90%, transparent 100%);
@@ -218,8 +195,9 @@
   #buildlog .sec{ color:#4f4c45; }
   #buildlog .ok{ color:var(--emerald-deep); }
   #buildlog .warn{ color:var(--log-warm); }
-  #buildlog .quote{ color:#9a9488; font-style:italic; }
-  #buildlog .dim{ color:#aaa495; }
+  #buildlog .story{ color:#6f6a5d; }
+  #buildlog .quote{ color:#8a8478; font-style:italic; }
+  #buildlog .dim{ color:#b3ad9f; }
   #buildlog .cur{ display:inline-block; width:.55em; height:1.02em; background:#4f4c45;
     transform:translateY(2px); margin-left:1px; animation:blink 1.05s steps(1) infinite; }
   @keyframes blink{ 50%{ opacity:0; } }
@@ -263,9 +241,6 @@
     .anim .card{ animation:none; }
     #petals .petal{ display:none; }
     .lily-img, .lily-wrap.drawn .lily-img{ animation:none !important; }
-    .sprig{ animation:none !important; opacity:1; }
-    .bloom{ animation:none !important; transform:none !important; opacity:1 !important; }
-    .bud{ opacity:0 !important; }
     .sheen{ display:none; }
   }
 </style>
@@ -287,24 +262,6 @@
       <img class="lily-img" src="assets/lily.png" alt="A hand-drawn emerald calla lily" />
       <span class="ink-front"></span>
       <div id="artifact" aria-hidden="true"></div>
-    </div>
-
-    <div class="mid" aria-hidden="true">
-      <svg class="sprig" viewBox="0 0 64 150" role="img" aria-label="a sprig blooming into flower">
-        <path d="M32 146 C 28 118 35 100 32 72 C 30 50 33 32 32 16"/>
-        <path d="M32 116 C 19 109 11 114 15 126 C 24 124 29 121 32 116"/>
-        <path d="M32 90 C 45 83 53 88 49 100 C 40 98 35 95 32 90"/>
-        <path d="M32 62 C 20 56 13 60 17 71 C 25 69 29 66 32 62"/>
-        <path class="bud" d="M32 28 C 26 21 28 10 32 5 C 36 10 38 21 32 28 Z"/>
-        <g class="bloom">
-          <path class="fp" d="M32 15 C 27.5 11 28 5.5 32 2.5 C 36 5.5 36.5 11 32 15 Z"/>
-          <path class="fp" d="M32 15 C 27.5 11 28 5.5 32 2.5 C 36 5.5 36.5 11 32 15 Z" transform="rotate(52 32 15)"/>
-          <path class="fp" d="M32 15 C 27.5 11 28 5.5 32 2.5 C 36 5.5 36.5 11 32 15 Z" transform="rotate(-52 32 15)"/>
-          <path class="fp" d="M32 15 C 27.5 11 28 5.5 32 2.5 C 36 5.5 36.5 11 32 15 Z" transform="rotate(106 32 15)"/>
-          <path class="fp" d="M32 15 C 27.5 11 28 5.5 32 2.5 C 36 5.5 36.5 11 32 15 Z" transform="rotate(-106 32 15)"/>
-          <circle class="core" cx="32" cy="15" r="1.7"/>
-        </g>
-      </svg>
     </div>
 
     <div class="lower">
@@ -407,75 +364,38 @@
     const days = Math.max(1, Math.ceil((TARGET - Date.now()) / 864e5));
 
     // —— our story, as a git history ——
-    L.push(H("▸ git log --reverse --pretty=story  ~/us"));
-    L.push(O("commit 0001f1f   init: two engineers meet at a standup"));
-    L.push(Q("           you reviewed my PR. zero comments. i was intrigued."));
-    L.push(O("commit a1c0ffe   feat: first date over coffee ☕"));
-    L.push(Q("           blez ordered an oat flat white. yuki ordered the same. (good sign)"));
-    L.push(O("commit c0ffee0   revert \"we should just be friends\""));
-    L.push(Q("           // glad we reverted this one"));
-    L.push(O("commit b1ec0de   fix(heart): resolve a conflict with logic, then with kindness"));
-    L.push(O("commit cafe777   chore: merge our coffee orders into one subscription ☕☕"));
-    L.push(O("commit d15c0de   perf: late-night calls now O(1), no matter the distance"));
-    L.push(O("commit 1ab1ee7   feat(travel): shipped a trip together → zero rollbacks"));
-    L.push(O("commit 5caff01   docs: learned each other's coffee, playlists, silences"));
-    L.push(O("commit 7a11de1   yuki: // TODO: marry blez"));
-    L.push(O("commit 8e21d6b   blez: LGTM 💍"));
-    L.push(O("commit 1f0c5aa   yuki: commit -m \"yes\" --amend"));
-    L.push(Q("           (it was always going to be yes)"));
+    const S = (sha, msg) => ({ c: "story", t: `<span class="dim">${sha}</span>  ${msg}` });
+    L.push(H("▸ git log --pretty=our-story  ~/us"));
+    L.push(S("0001f1f", "two engineers meet at a standup"));
+    L.push(S("a1c0ffe", "first date over coffee ☕  — same order, good sign"));
+    L.push(S("c0ffee0", "revert \"we should just be friends\""));
+    L.push(Q("            // glad we reverted this one"));
+    L.push(S("1ab1ee7", "our first trip together → zero rollbacks"));
+    L.push(S("7a11de1", "yuki:  // TODO: marry blez"));
+    L.push(S("8e21d6b", "blez:  LGTM 💍"));
+    L.push(S("1f0c5aa", "yuki:  commit -m \"yes\" --amend"));
+    L.push(Q("            (it was always going to be yes)"));
 
     // —— the merge ——
-    L.push(H("▸ git merge blez --no-ff   # keep every commit of how we got here"));
-    L.push(O("Merging blez into main…"));
-    L.push(K("✓ resolved 1 conflict in last-name.txt (kept both)"));
-    L.push(O("Signed-off-by: 💍   Reviewed-by: both of us"));
+    L.push(H("▸ git merge blez --no-ff"));
+    L.push(K("✓ resolved 1 conflict in last-name.txt — kept both"));
 
     // —— install the things we can't live without ——
-    L.push(H("▸ npm install   # the things we can't live without"));
-    const pkgs = [["coffee","∞"],["same-coffee-order","2.1.0"],["slow-mornings","5.0.0"],
-      ["react","18.3.1"],["trust","^10.0.0"],["patience","2.4.0"],
-      ["inside-jokes","4.2.0"],["late-night-coding","3.3.0"],["weekend-trips","2.2.2"],
-      ["matching-playlists","7.7.7"],["@home/cebu","1.0.0"],["adventure","^2.0.0"],
-      ["good-coffee","6.0.0"],["dog-someday","0.1.0"],["laughter","9.9.9"],
-      ["support","^4.0.0"],["date-night","5.0.4"],["compromise","5.1.2"],
-      ["@us/forever","1.0.0"],["typescript","5.5.4"]];
-    pkgs.forEach(([n, v]) => L.push(O("+ " + n + "@" + v)));
-    L.push(W("npm warn peer in-laws@^2.0.0: found in-laws@1.0.0 — proceeding anyway"));
-    L.push(O("added 214 packages, audited 215 in 3.7s · found 0 vulnerabilities"));
-
-    // —— build ——
-    L.push(H("▸ vite build --target forever"));
-    L.push(O("vite v5.3.1 building for production…"));
-    ["vows","rings","venue","guests","playlist","first-dance","cake","toast"].forEach((m, i) =>
-      L.push(O("transforming (" + ((i + 1) * 37) + ") src/" + m + ".ts")));
-    L.push(O("✓ 296 modules transformed."));
-    L.push(O("dist/index.html            1.92 kB │ gzip:  0.81 kB"));
-    L.push(O("dist/assets/calla-lily.svg 3.07 kB │ gzip:  1.18 kB"));
-    L.push(O("dist/assets/vows.js      214.18 kB │ gzip: 71.04 kB"));
-    L.push(K("✓ built in " + days + "d"));
+    L.push(H("▸ npm install   # what we can't live without"));
+    L.push(O("+ coffee@∞   + patience   + trust"));
+    L.push(O("+ late-night-talks   + weekend-trips   + @us/forever"));
 
     // —— tests ——
     L.push(H("▸ vitest run"));
-    ["makes two cups of coffee, every morning ☕","we make each other laugh",
-     "handles long-distance","says sorry first","shares the last bite",
-     "remembers the small things","stays calm in production","keeps its promises",
-     "splits the bill fairly","has each other's back","survives ikea together",
-     "merges schedules without conflict"
-    ].forEach((t) => L.push(K("  ✓ " + t)));
-    L.push(O("  ↓ cold-feet.test.ts (skipped)"));
-    L.push(O("  Test Files  9 passed (9)   ·   Tests  41 passed · 1 skipped (42)"));
+    L.push(K("✓ makes two cups of coffee, every morning"));
+    L.push(K("✓ says sorry first  ·  shares the last bite"));
+    L.push(O("↓ cold-feet.test.ts (skipped)"));
 
     // —— deploy ——
-    L.push(H("▸ deploy --prod --region ap-southeast-cebu"));
-    L.push(W("compiling vows… 1 error: too many to fit (warning suppressed)"));
-    L.push(K("✓ booking venue… Cebu, Philippines"));
-    L.push(K("✓ provisioning forever… this may take a while"));
-    L.push(O("uploading 248 files to production…"));
-    ["index.html","paper.css","calla-lily.svg","vows.js","rings.png","two-cups.coffee"].forEach((f) =>
-      L.push(O("↑ dist/" + f)));
-    L.push(O("invalidating CDN cache… done"));
-    L.push(K("✔ https://yuki-and-blez.wedding · 200 OK"));
-    L.push(O("rendering the rest of our lives…"));
+    L.push(H("▸ deploy --prod --region cebu"));
+    L.push(K("✓ booking venue … Cebu, Philippines"));
+    L.push(K("✓ provisioning forever …"));
+    L.push(K("✔ save the date · April 18, 2027"));
     return L;
   }
 
@@ -484,9 +404,10 @@
     for (let i = 0; i < L.length; i++) {
       if (done) break;
       line(`<span class="${L[i].c}">${L[i].t}</span>`);
-      await sleep(L[i].c === "sec" ? 120 : L[i].c === "quote" ? 80 : (32 + (i % 4 === 0 ? 12 : 0)));
+      const d = L[i].c === "sec" ? 280 : L[i].c === "quote" ? 360 : L[i].c === "story" ? 300 : 220;
+      await sleep(done ? 0 : d);
     }
-    await sleep(done ? 0 : 160);
+    await sleep(done ? 0 : 320);
   }
 
   const artLine = (t) => {
